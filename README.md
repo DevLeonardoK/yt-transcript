@@ -15,7 +15,7 @@
 
 1. Se o vídeo tem legenda no idioma original (manual ou automática), usa ela. Leva uns 3 segundos.
 2. Se não tem, baixa o áudio e transcreve com o Whisper no seu computador. Num notebook de 4 núcleos, roda ~8x mais rápido que a duração do vídeo.
-3. Com um agente de IA, o [`AGENTS.md`](AGENTS.md) ensina o agente a transformar a transcrição em relatório: resumo, insights, citações com link para o tempo exato e checagem de fatos com pesquisa na web.
+3. Com um agente de IA, o [`AGENTS.md`](AGENTS.md) ensina o agente a transformar a transcrição num `.md` com a análise completa: resumo, insights, citações com link para o tempo exato e checagem de fatos com pesquisa na web.
 
 ## Instalação
 
@@ -88,7 +88,7 @@ Os caminhos dos arquivos gerados saem no **stdout**, um por linha, e o progresso
 
 ## Usando com um agente de IA
 
-A ideia: você manda o link e o agente faz o resto. Ele transcreve, lê tudo, pesquisa e entrega um relatório em `analises/`.
+A ideia: você manda o link e o agente faz o resto. Ele transcreve, corrige a transcrição, pesquisa e entrega um `.md` com a análise completa em `analises/`.
 
 ### 1. Abra o agente na pasta do projeto
 
@@ -133,11 +133,12 @@ Checa os fatos desse vídeo, com fontes: https://www.youtube.com/watch?v=ID
 
 ### 3. O que você recebe
 
-- `transcricoes/<título> [ID].txt` e `.srt`: o texto bruto e as legendas com tempo.
-- `transcricoes/<título> [ID].revisado.md`: a transcrição corrigida pelo agente (nomes, termos, números, pontuação e parágrafos), com a lista do que foi corrigido.
-- `analises/<título> [ID].md`: o relatório, com TL;DR, estrutura do vídeo com links para cada parte, pontos principais, insights, citações, tabela de afirmações checadas (✅ ⚠️ ❌ ❓) com fontes, conceitos citados, pesquisa complementar e perguntas em aberto.
+Um arquivo por vídeo, **`analises/<título> [ID].md`**, com tudo junto:
 
-O modelo do relatório e as regras (não inventar citações, separar o que o vídeo diz do que o agente conclui, citar fontes) estão no [`AGENTS.md`](AGENTS.md). Edite o arquivo para mudar o formato do relatório.
+- **Análise:** TL;DR, estrutura do vídeo com link para cada parte, pontos principais, insights, citações marcantes, afirmações checadas (✅ ⚠️ ❌ ❓) com fontes, conceitos citados, pesquisa complementar, aplicação prática, perguntas em aberto e um veredito.
+- **Anexo:** a transcrição revisada pelo agente (nomes, termos, números, pontuação e parágrafos corrigidos), com link para o tempo de cada parágrafo, a lista do que foi corrigido e os trechos incertos.
+
+O texto bruto e as legendas com tempo ficam em `transcricoes/`. O modelo do arquivo e as regras (não inventar citações, separar o que o vídeo diz do que o agente conclui, citar fontes) estão no [`AGENTS.md`](AGENTS.md). Edite o arquivo para mudar o formato.
 
 ## Desenvolvimento
 

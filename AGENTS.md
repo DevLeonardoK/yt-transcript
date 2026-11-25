@@ -109,45 +109,21 @@ Use também o título, o canal e, se tiver busca na web, pesquise o palestrante 
 
 **Organize em parágrafos** por assunto e, quando der para identificar, separe quem fala (entrevistas e podcasts): `**Entrevistador:**`, `**Fulano:**`.
 
-**Salve** em `transcricoes/<mesmo nome do .txt>.revisado.md`, sem apagar o original:
-
-```markdown
-# <Título> (transcrição revisada)
-
-<url> · fonte original: <manual / automática / whisper>
-
-## Transcrição
-
-[00:00](url&t=0s) Texto revisado do primeiro bloco, em parágrafos...
-
-[02:15](url&t=135s) Próximo bloco...
-
-## Correções feitas
-
-| Tempo | Original | Corrigido | Motivo |
-|---|---|---|---|
-| [03:12](url&t=192s) | "Daniel Caneman" | Daniel Kahneman | nome do autor citado; confirmado na descrição |
-
-## Trechos incertos
-
-- [08:40](url&t=520s): "...não ficou claro se ele diz 'trinta' ou 'treze' por cento"
-```
-
-Coloque um tempo do `.srt` a cada parágrafo, para o leitor poder conferir no vídeo. Na tabela, liste as correções que mudam o entendimento (nomes, termos, números, palavras trocadas); pontuação e maiúsculas não precisam ir para a tabela.
+**Onde fica:** a transcrição revisada não vira arquivo separado. Ela entra no fim do `.md` da análise, na parte **Anexo** (veja o modelo na seção 1.4), com um tempo do `.srt` a cada parágrafo, a tabela de correções e a lista de trechos incertos. Na tabela, liste as correções que mudam o entendimento (nomes, termos, números, palavras trocadas); pontuação e maiúsculas não precisam ir para a tabela.
 
 ### 1.4 Analisar
 
-Trabalhe sobre a transcrição revisada (seção 1.3). Leia ela inteira antes de escrever. Se ela não couber de uma vez, leia em partes na ordem e faça anotações por parte (tema, tempo de início, pontos principais) antes de juntar tudo. Não analise só o começo.
+Trabalhe sobre a transcrição revisada (seção 1.3), nunca sobre a bruta. Leia ela inteira antes de escrever. Se ela não couber de uma vez, leia em partes na ordem e faça anotações por parte (tema, tempo de início, pontos principais) antes de juntar tudo. Não analise só o começo.
 
-Escreva o relatório em `analises/<mesmo nome do .txt>.md`, a menos que o usuário peça outro lugar ou formato. Use o idioma em que o usuário falou com você, mesmo que o vídeo seja em outro.
+**A entrega é sempre um único arquivo Markdown por vídeo:** `analises/<mesmo nome do .txt>.md`. Ele reúne tudo: a análise completa, os insights, a checagem de fatos e, no anexo, a transcrição revisada. Quem abrir esse arquivo não precisa de mais nada.
 
-Ajuste a profundidade ao pedido:
+- Todo link de vídeo gera esse `.md` completo, seja qual for o pedido ("resume", "analisa", só o link). O pedido muda o que você destaca no chat, não o arquivo.
+- Pergunta específica ("o que ele fala sobre X?", "lista as ferramentas citadas"): responda no chat com tempos e citações. Se o vídeo ainda não tem `.md`, gere-o também.
+- Se o arquivo já existir (vídeo analisado antes), atualize em vez de criar outro.
+- Escreva no idioma em que o usuário falou com você, mesmo que o vídeo seja em outro. A transcrição revisada do anexo fica no idioma original do vídeo.
+- Outro lugar ou formato só se o usuário pedir.
 
-- **"Resume", "do que se trata"**: só TL;DR e pontos principais, direto no chat, sem arquivo. A revisão pode ser só mental (sem salvar o `.revisado.md`), mas os nomes e números do resumo têm que estar corrigidos.
-- **"Analisa", "insights", "detalhes"** ou só o link sem instrução: o relatório completo abaixo.
-- **Pedido específico** ("o que ele fala sobre X?", "lista as ferramentas citadas"): responda só isso, com tempos e citações.
-
-#### Modelo do relatório completo
+#### Modelo do arquivo
 
 ```markdown
 # <Título do vídeo>
@@ -156,7 +132,7 @@ Ajuste a profundidade ao pedido:
 - **Canal / palestrante:** <se der para identificar>
 - **Duração:** <hh:mm:ss>
 - **Fonte da transcrição:** <manual / automática / whisper>, confiabilidade <alta/média>
-- **Transcrição revisada:** <caminho do .revisado.md>, <N> correções, <M> trechos incertos
+- **Revisão da transcrição:** <N> correções, <M> trechos incertos (ver Anexo)
 - **Analisado em:** <data de hoje>
 
 ## TL;DR
@@ -197,9 +173,31 @@ Ações concretas que dá para tirar do vídeo, quando houver.
 
 ## Perguntas em aberto
 O que o vídeo não responde ou deixa ambíguo.
+
+## Veredito
+Vale assistir? Para quem? Qual a força e a fraqueza principal do conteúdo,
+em 2 a 4 frases.
+
+---
+
+## Anexo: transcrição revisada
+
+[00:00](url&t=0s) Texto revisado do primeiro bloco, em parágrafos...
+
+[02:15](url&t=135s) Próximo bloco...
+
+### Correções feitas
+| Tempo | Original | Corrigido | Motivo |
+|---|---|---|---|
+| [03:12](url&t=192s) | "Daniel Caneman" | Daniel Kahneman | nome do autor citado; confirmado na descrição |
+
+### Trechos incertos
+- [08:40](url&t=520s): não ficou claro se ele diz "trinta" ou "treze" por cento
 ```
 
-Corte as seções que não fizerem sentido para o vídeo (uma entrevista casual pode não ter "Aplicação prática"). Não preencha seção com nada.
+Corte as seções da análise que não fizerem sentido para o vídeo (uma entrevista casual pode não ter "Aplicação prática"). Não preencha seção com nada. O TL;DR, os Insights e o Anexo são obrigatórios.
+
+Se a descrição do vídeo tiver capítulos, use-os como base da "Estrutura do vídeo" e confira os tempos no `.srt`.
 
 #### Tempos e links
 
@@ -217,7 +215,7 @@ Se você tem busca na web, use. Ela é o que diferencia a análise de um resumo.
 4. **Seja justo:** "parcialmente correta" é uma resposta válida. Diga o que está certo e o que está errado. Se a afirmação estava correta na época do vídeo mas mudou, explique.
 5. **Pesquise o contexto:** quem é o palestrante, se tem conflito de interesse (vende o produto de que fala?), se há consenso ou controvérsia sobre o tema.
 
-Se você **não** tem busca na web, diga isso no relatório, marque as afirmações como ❓ e liste o que valeria checar.
+Se você **não** tem busca na web, diga isso no `.md`, marque as afirmações como ❓ e liste o que valeria checar.
 
 #### Regras
 
@@ -228,11 +226,11 @@ Se você **não** tem busca na web, diga isso no relatório, marque as afirmaç�
 
 ### 1.5 Vários vídeos
 
-Quando o usuário mandar vários links sobre o mesmo tema, além de um relatório por vídeo (ou no lugar deles, se ele pedir), faça `analises/comparativo-<tema>.md` com: onde os vídeos concordam, onde discordam (e quem tem mais apoio nas fontes), o que só um deles cobre e uma síntese final.
+Quando o usuário mandar vários links, gere um `.md` por vídeo. Se forem do mesmo tema, faça também `analises/comparativo-<tema>.md` com: onde os vídeos concordam, onde discordam (e quem tem mais apoio nas fontes), o que só um deles cobre e uma síntese final.
 
 ### 1.6 Ao terminar
 
-No chat, entregue: o caminho do relatório e da transcrição revisada, o TL;DR, os 3 insights mais fortes e qualquer alerta importante (afirmação falsa, transcrição de baixa confiabilidade, vídeo cortado). Não cole o relatório inteiro no chat.
+No chat, entregue: o caminho do `.md`, o TL;DR, os 3 insights mais fortes e qualquer alerta importante (afirmação falsa, transcrição de baixa confiabilidade, vídeo cortado). Não cole o arquivo inteiro no chat.
 
 ---
 
