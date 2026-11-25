@@ -56,7 +56,7 @@ Fonte: legenda manual do YouTube (pt-BR)   ← ou "legenda automática" ou "whis
 | legenda automática | média: erra nomes próprios, números e termos técnicos |
 | whisper.cpp | média: erros parecidos (~10% das palavras com o modelo `base`) |
 
-Com fonte automática ou whisper, trate nomes, números e siglas como prováveis erros de transcrição. Corrija pelo contexto quando for óbvio e marque com *(transcrição incerta)* quando não for.
+Toda transcrição passa pela revisão da seção 1.3 antes da análise. Com fonte automática ou whisper, a revisão é obrigatória e profunda.
 
 Opções úteis:
 
@@ -71,15 +71,79 @@ Problemas comuns:
 - "Sign in to confirm you're not a bot" ou HTTP 403: o `yt-dlp` está desatualizado. Peça ao usuário para atualizá-lo (`pipx upgrade yt-dlp`, `brew upgrade yt-dlp` ou `winget upgrade yt-dlp.yt-dlp`).
 - Vídeo privado, com restrição de idade ou de membros: não dá para baixar. Avise o usuário.
 
-### 1.3 Analisar
+### 1.3 Revisar e corrigir a transcrição
 
-Leia a transcrição inteira antes de escrever. Se ela não couber de uma vez, leia em partes na ordem e faça anotações por parte (tema, tempo de início, pontos principais) antes de juntar tudo. Não analise só o começo.
+A transcrição bruta tem erros. Antes de analisar, corrija o máximo que conseguir: a análise, as citações e a checagem de fatos usam o texto revisado. Um nome errado na transcrição vira uma pesquisa errada e uma citação errada.
+
+**Junte contexto primeiro.** A descrição do vídeo costuma trazer nomes, empresas, livros e links escritos do jeito certo:
+
+```bash
+yt-dlp --skip-download --no-warnings --print "%(channel)s" --print "%(upload_date)s" --print "%(description)s" "<url>"
+```
+
+Use também o título, o canal e, se tiver busca na web, pesquise o palestrante e o assunto para conhecer os nomes e termos da área.
+
+**O que corrigir:**
+
+| Erro típico | Exemplo | Como resolver |
+|---|---|---|
+| Nomes de pessoas, empresas e marcas | "Elon Mask", "a NVídia" | descrição do vídeo, busca na web |
+| Termos técnicos e jargão | "cubernetes", "machine lerning" | conhecimento da área e contexto da frase |
+| Palavras estrangeiras no meio do português | "o feed bec do cliente" | escreva o termo original (*feedback*) |
+| Palavras que soam iguais | "concerto" × "conserto", "mais" × "mas" | sentido da frase |
+| Números, datas, valores e unidades | "dois mil e vinte" → 2020; "15%" que deveria ser "50%" | plausibilidade e contexto; confira dados citados |
+| Siglas | "a ONG" × "a ONU" | contexto |
+| Palavras cortadas ou juntadas | "em quanto", "derrepente" | ortografia |
+| Mesmo nome escrito de formas diferentes | "Ana Cláudia" e "Ana Claudia" | escolha a forma certa e use em todo o texto |
+| Pontuação e maiúsculas | a legenda automática do YouTube vem **sem pontuação nenhuma** | pontue pelo sentido e pelas pausas do `.srt` |
+| Alucinações do whisper | frase repetida várias vezes seguidas, "Legendas pela comunidade Amara.org", "Obrigado por assistir" no meio de silêncio | remova |
+
+**Limites da revisão:**
+
+- **Corrija a transcrição, não a fala.** Mantenha as palavras e o jeito de falar do palestrante. Não reescreva frases, não troque gírias, não corrija a gramática da fala. Pode tirar gaguejos e repetições puras ("eu eu eu acho" → "eu acho").
+- **Não mude o sentido.** Se o palestrante disse um dado errado, a transcrição continua com o dado errado. Isso é assunto da checagem de fatos, não da revisão.
+- **Na dúvida, não chute.** Mantenha o trecho como está e marque com `[?]`, ou dê a melhor hipótese: `[provável: Kahneman]`. Trecho impossível de entender vira `[inaudível]`.
+- Legenda manual: faça só uma revisão leve (pontuação, nomes óbvios). Ela já foi revisada por alguém.
+
+**Como fazer em transcrições longas:** revise em partes, na ordem, e mantenha um glossário (nome ou termo → grafia certa) que vale para todas as partes. Assim a mesma pessoa não fica com três grafias diferentes.
+
+**Organize em parágrafos** por assunto e, quando der para identificar, separe quem fala (entrevistas e podcasts): `**Entrevistador:**`, `**Fulano:**`.
+
+**Salve** em `transcricoes/<mesmo nome do .txt>.revisado.md`, sem apagar o original:
+
+```markdown
+# <Título> (transcrição revisada)
+
+<url> · fonte original: <manual / automática / whisper>
+
+## Transcrição
+
+[00:00](url&t=0s) Texto revisado do primeiro bloco, em parágrafos...
+
+[02:15](url&t=135s) Próximo bloco...
+
+## Correções feitas
+
+| Tempo | Original | Corrigido | Motivo |
+|---|---|---|---|
+| [03:12](url&t=192s) | "Daniel Caneman" | Daniel Kahneman | nome do autor citado; confirmado na descrição |
+
+## Trechos incertos
+
+- [08:40](url&t=520s): "...não ficou claro se ele diz 'trinta' ou 'treze' por cento"
+```
+
+Coloque um tempo do `.srt` a cada parágrafo, para o leitor poder conferir no vídeo. Na tabela, liste as correções que mudam o entendimento (nomes, termos, números, palavras trocadas); pontuação e maiúsculas não precisam ir para a tabela.
+
+### 1.4 Analisar
+
+Trabalhe sobre a transcrição revisada (seção 1.3). Leia ela inteira antes de escrever. Se ela não couber de uma vez, leia em partes na ordem e faça anotações por parte (tema, tempo de início, pontos principais) antes de juntar tudo. Não analise só o começo.
 
 Escreva o relatório em `analises/<mesmo nome do .txt>.md`, a menos que o usuário peça outro lugar ou formato. Use o idioma em que o usuário falou com você, mesmo que o vídeo seja em outro.
 
 Ajuste a profundidade ao pedido:
 
-- **"Resume", "do que se trata"**: só TL;DR e pontos principais, direto no chat, sem arquivo.
+- **"Resume", "do que se trata"**: só TL;DR e pontos principais, direto no chat, sem arquivo. A revisão pode ser só mental (sem salvar o `.revisado.md`), mas os nomes e números do resumo têm que estar corrigidos.
 - **"Analisa", "insights", "detalhes"** ou só o link sem instrução: o relatório completo abaixo.
 - **Pedido específico** ("o que ele fala sobre X?", "lista as ferramentas citadas"): responda só isso, com tempos e citações.
 
@@ -92,6 +156,7 @@ Ajuste a profundidade ao pedido:
 - **Canal / palestrante:** <se der para identificar>
 - **Duração:** <hh:mm:ss>
 - **Fonte da transcrição:** <manual / automática / whisper>, confiabilidade <alta/média>
+- **Transcrição revisada:** <caminho do .revisado.md>, <N> correções, <M> trechos incertos
 - **Analisado em:** <data de hoje>
 
 ## TL;DR
@@ -161,13 +226,13 @@ Se você **não** tem busca na web, diga isso no relatório, marque as afirmaç�
 - **Não amenize nem exagere.** Se o vídeo tem erros graves, diga com fontes. Se é bom, diga também.
 - Assuntos sensíveis (saúde, finanças, direito): aponte quando o vídeo der conselho sem base e indique fontes confiáveis.
 
-### 1.4 Vários vídeos
+### 1.5 Vários vídeos
 
 Quando o usuário mandar vários links sobre o mesmo tema, além de um relatório por vídeo (ou no lugar deles, se ele pedir), faça `analises/comparativo-<tema>.md` com: onde os vídeos concordam, onde discordam (e quem tem mais apoio nas fontes), o que só um deles cobre e uma síntese final.
 
-### 1.5 Ao terminar
+### 1.6 Ao terminar
 
-No chat, entregue: o caminho do relatório, o TL;DR, os 3 insights mais fortes e qualquer alerta importante (afirmação falsa, transcrição de baixa confiabilidade, vídeo cortado). Não cole o relatório inteiro no chat.
+No chat, entregue: o caminho do relatório e da transcrição revisada, o TL;DR, os 3 insights mais fortes e qualquer alerta importante (afirmação falsa, transcrição de baixa confiabilidade, vídeo cortado). Não cole o relatório inteiro no chat.
 
 ---
 
@@ -203,6 +268,6 @@ Regras do código:
 - **Processos externos** só por `command(ctx, ...)`: herda o cancelamento do Ctrl+C e limpa o `LD_LIBRARY_PATH` do Nix. Passe `--` antes de URLs vindas do usuário, para que não virem opções.
 - **stdout é só para caminhos de arquivos gerados** (scripts e agentes dependem disso). Todo o resto vai para o stderr via `logger`.
 - **Downloads** só via `fetch()`: grava em `.part`, confere o tamanho e o SHA-256 e só então renomeia. Binários baixados precisam de hash fixo no código.
-- **Desempenho se mede, não se supõe.** Mudança que diz deixar mais rápido traz número: tempo do comando antes e depois. Mudança no whisper (flags, modelo) traz também a taxa de erro (WER) contra uma legenda manual. Veja a seção Desempenho do README.
+- **Desempenho se mede, não se supõe.** Mudança que diz deixar mais rápido traz número: tempo do comando antes e depois. Mudança no whisper (flags, modelo) traz também a taxa de erro (WER) contra uma legenda manual.
 - Mensagens para o usuário e comentários em português. Nomes no código em inglês.
 - Sem dependências novas sem conversar antes.

@@ -133,32 +133,11 @@ Checa os fatos desse vídeo, com fontes: https://www.youtube.com/watch?v=ID
 
 ### 3. O que você recebe
 
-- `transcricoes/<título> [ID].txt` e `.srt`: o texto completo e as legendas com tempo.
+- `transcricoes/<título> [ID].txt` e `.srt`: o texto bruto e as legendas com tempo.
+- `transcricoes/<título> [ID].revisado.md`: a transcrição corrigida pelo agente (nomes, termos, números, pontuação e parágrafos), com a lista do que foi corrigido.
 - `analises/<título> [ID].md`: o relatório, com TL;DR, estrutura do vídeo com links para cada parte, pontos principais, insights, citações, tabela de afirmações checadas (✅ ⚠️ ❌ ❓) com fontes, conceitos citados, pesquisa complementar e perguntas em aberto.
 
 O modelo do relatório e as regras (não inventar citações, separar o que o vídeo diz do que o agente conclui, citar fontes) estão no [`AGENTS.md`](AGENTS.md). Edite o arquivo para mudar o formato do relatório.
-
-## Desempenho
-
-Medido num i5-1135G7 (4 núcleos / 8 threads) com um TEDx em português de 14,5 min. A qualidade é a taxa de erro de palavras (WER) contra a legenda manual do vídeo.
-
-| | Versão inicial | Atual |
-|---|---|---|
-| Com legenda do YouTube | 4,0 s | 2,8 s |
-| Sem legenda (IA local, `base`) | 188 s, WER 12,5% | 104 s, WER 12,6% |
-| 4 vídeos com legenda | 11,6 s | 5,1 s |
-
-O que fez diferença:
-
-- **Threads = núcleos físicos.** O whisper com hyperthreads ficou ~2x mais lento e instável (8 threads: 50–95 s; 4 threads: 43–48 s num trecho de 5 min). A detecção funciona em Linux, macOS e Windows.
-- **VAD (Silero).** Pula os silêncios: ~20% mais rápido e com menos erros, porque o Whisper não "inventa" texto no silêncio.
-- **Uma leitura da página.** Os metadados vêm uma vez só (`yt-dlp -J`), e as chamadas seguintes usam `--load-info-json`. Isso economiza ~1,4 s por vídeo.
-- **Download → ffmpeg por pipe.** A conversão para 16 kHz acontece durante o download, e o áudio original não vai para o disco.
-- **Paralelismo controlado.** Downloads e legendas de vários vídeos rodam juntos, e a IA roda um vídeo por vez (ela já usa todos os núcleos).
-
-Testado e descartado, porque piorou a qualidade: áudio de 50 kbps (WER 11,1% contra 9,8%), modelo `base` quantizado q5_1 (10,6–13%) e busca gulosa no `base` (13,8%). No modelo `small` a busca gulosa não perde qualidade (WER 6,8%, contra 9,2% do `base`): use `-model small -beam 1` quando a precisão importar mais.
-
-A memória é dominada pelo whisper (~500 MB com `base`). O processo Go usa poucos MB, e o parser de legendas processa 1 h de legenda automática em ~2,7 ms.
 
 ## Desenvolvimento
 
