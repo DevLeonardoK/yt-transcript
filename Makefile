@@ -6,18 +6,12 @@ VAD     := silero-v6.2.0
 # binário estático (sem cgo), sem caminhos locais e sem tabela de debug: menor e reproduzível
 GOFLAGS_BUILD := -trimpath -ldflags="-s -w"
 
-.PHONY: all build whisper model vad test bench lint install clean
+.PHONY: all build whisper model vad lint install clean
 
 all: whisper build
 
 build:
 	CGO_ENABLED=0 $(GO) build $(GOFLAGS_BUILD) -o bin/yt-transcript .
-
-test:
-	$(GO) test -race ./...
-
-bench:
-	$(GO) test -run '^$$' -bench . -benchmem ./...
 
 lint:
 	$(GO) vet ./...

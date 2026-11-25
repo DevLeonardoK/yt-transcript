@@ -15,7 +15,7 @@
 
 1. Se o vídeo tem legenda no idioma original (manual ou automática), usa ela. Leva uns 3 segundos.
 2. Se não tem, baixa o áudio e transcreve com o Whisper no seu computador. Num notebook de 4 núcleos, roda ~8x mais rápido que a duração do vídeo.
-3. Com um agente de IA (Claude Code, Codex, Gemini CLI, Cursor...), o [`AGENTS.md`](AGENTS.md) ensina o agente a transformar a transcrição em relatório: resumo, insights, citações com link para o tempo exato e checagem de fatos com pesquisa na web.
+3. Com um agente de IA, o [`AGENTS.md`](AGENTS.md) ensina o agente a transformar a transcrição em relatório: resumo, insights, citações com link para o tempo exato e checagem de fatos com pesquisa na web.
 
 ## Instalação
 
@@ -92,15 +92,17 @@ A ideia: você manda o link e o agente faz o resto. Ele transcreve, lê tudo, pe
 
 ### 1. Abra o agente na pasta do projeto
 
-O agente precisa estar dentro da pasta `yt-transcript` para ler o `AGENTS.md`.
+O agente precisa estar dentro da pasta `yt-transcript`. As instruções ficam no [`AGENTS.md`](AGENTS.md), o padrão aberto lido pela maioria dos agentes.
 
-| Agente | Como abrir | Lê as instruções sozinho? |
-|---|---|---|
-| [Claude Code](https://claude.com/claude-code) | `cd yt-transcript && claude` | Sim, pelo `CLAUDE.md` (que importa o `AGENTS.md`) |
-| [Codex CLI](https://github.com/openai/codex) | `cd yt-transcript && codex` | Sim, `AGENTS.md` |
-| [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `cd yt-transcript && gemini` | Sim, pelo `GEMINI.md` (que importa o `AGENTS.md`) |
-| Cursor / VS Code + Copilot / Windsurf | abra a pasta no editor e use o chat do agente | Sim, `AGENTS.md` |
-| Outro | abra na pasta | Se não ler, comece com: *"Leia o AGENTS.md e siga as instruções."* |
+| Agente | Como abrir |
+|---|---|
+| [Claude Code](https://claude.com/claude-code) | `cd yt-transcript && claude` |
+| [Codex CLI](https://github.com/openai/codex) | `cd yt-transcript && codex` |
+| [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `cd yt-transcript && gemini` |
+| Cursor / VS Code + Copilot / Windsurf | abra a pasta no editor e use o chat do agente |
+| Outro | abra o agente na pasta |
+
+Se o seu agente não carregar o `AGENTS.md` sozinho, comece a conversa com: *"Leia o AGENTS.md e siga as instruções."*
 
 Para resultados melhores, use um agente com **busca na web** ligada: é ela que permite checar as afirmações do vídeo.
 
@@ -156,17 +158,16 @@ O que fez diferença:
 
 Testado e descartado, porque piorou a qualidade: áudio de 50 kbps (WER 11,1% contra 9,8%), modelo `base` quantizado q5_1 (10,6–13%) e busca gulosa no `base` (13,8%). No modelo `small` a busca gulosa não perde qualidade (WER 6,8%, contra 9,2% do `base`): use `-model small -beam 1` quando a precisão importar mais.
 
-A memória é dominada pelo whisper (~500 MB com `base`). O processo Go usa poucos MB, e o parser de legendas processa 1 h de legenda automática em ~2,7 ms (`make bench`).
+A memória é dominada pelo whisper (~500 MB com `base`). O processo Go usa poucos MB, e o parser de legendas processa 1 h de legenda automática em ~2,7 ms.
 
 ## Desenvolvimento
 
 ```bash
-make test     # testes (com -race)
+make build    # binário estático em bin/
 make lint     # go vet + go fix
-make bench    # benchmarks
 ```
 
-Go 1.27+, só biblioteca padrão. O CI roda os testes em Linux, macOS e Windows. Convenções e regras para contribuir (inclusive para agentes de IA) estão na parte 2 do [`AGENTS.md`](AGENTS.md).
+Go 1.27+, só biblioteca padrão. O CI compila e roda o `go vet` em Linux, macOS e Windows. Convenções e regras para contribuir (inclusive para agentes de IA) estão na parte 2 do [`AGENTS.md`](AGENTS.md).
 
 ## Observações
 

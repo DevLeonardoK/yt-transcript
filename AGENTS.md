@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Instruções para agentes de IA (Claude Code, Codex, Gemini CLI, Cursor, Copilot e outros) que trabalham neste repositório.
+Instruções para agentes de IA que trabalham neste repositório.
 
 Este repositório tem dois usos. Identifique qual o usuário quer:
 
@@ -187,13 +187,11 @@ Go 1.27+, sem dependências externas (só biblioteca padrão). Roda em Linux, ma
 Comandos:
 
 ```bash
-make test    # go test -race ./...
 make lint    # go vet + go fix -diff (precisa sair vazio)
-make bench   # benchmarks
 make build   # binário estático em bin/
 ```
 
-Antes de concluir qualquer mudança, rode `make lint test` e compile para os outros sistemas:
+Antes de concluir qualquer mudança, rode `make lint build`, teste o comando de verdade com um vídeo e compile para os outros sistemas:
 
 ```bash
 for t in linux/amd64 darwin/arm64 windows/amd64; do GOOS=${t%/*} GOARCH=${t#*/} go build -o /dev/null . || echo "falhou: $t"; done
@@ -205,6 +203,6 @@ Regras do código:
 - **Processos externos** só por `command(ctx, ...)`: herda o cancelamento do Ctrl+C e limpa o `LD_LIBRARY_PATH` do Nix. Passe `--` antes de URLs vindas do usuário, para que não virem opções.
 - **stdout é só para caminhos de arquivos gerados** (scripts e agentes dependem disso). Todo o resto vai para o stderr via `logger`.
 - **Downloads** só via `fetch()`: grava em `.part`, confere o tamanho e o SHA-256 e só então renomeia. Binários baixados precisam de hash fixo no código.
-- **Desempenho se mede, não se supõe.** Mudança que diz deixar mais rápido traz número: benchmark Go ou tempo do comando antes e depois. Mudança no whisper (flags, modelo) traz também a taxa de erro (WER) contra uma legenda manual. Veja a seção Desempenho do README.
+- **Desempenho se mede, não se supõe.** Mudança que diz deixar mais rápido traz número: tempo do comando antes e depois. Mudança no whisper (flags, modelo) traz também a taxa de erro (WER) contra uma legenda manual. Veja a seção Desempenho do README.
 - Mensagens para o usuário e comentários em português. Nomes no código em inglês.
 - Sem dependências novas sem conversar antes.

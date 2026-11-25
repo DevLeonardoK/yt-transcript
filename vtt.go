@@ -22,7 +22,7 @@ const recentLines = 4
 // anterior em cada cue ("rolagem"); aqui cada cue fica só com o texto novo.
 //
 // O laço evita regex e maps: em legendas automáticas de horas de vídeo isso
-// corta ~75% das alocações e é ~3,5x mais rápido (ver BenchmarkParseVTT).
+// corta ~75% das alocações e é ~3,5x mais rápido.
 func parseVTT(r io.Reader) ([]cue, error) {
 	sc := bufio.NewScanner(r)
 	sc.Buffer(make([]byte, 0, 64*1024), 1024*1024)
