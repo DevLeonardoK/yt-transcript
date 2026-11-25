@@ -95,7 +95,7 @@ Use também o título, o canal e, se tiver busca na web, pesquise o palestrante 
 | Siglas | "a ONG" × "a ONU" | contexto |
 | Palavras cortadas ou juntadas | "em quanto", "derrepente" | ortografia |
 | Mesmo nome escrito de formas diferentes | "Ana Cláudia" e "Ana Claudia" | escolha a forma certa e use em todo o texto |
-| Pontuação e maiúsculas | a legenda automática do YouTube vem **sem pontuação nenhuma** | pontue pelo sentido e pelas pausas do `.srt` |
+| Pontuação e maiúsculas | a legenda automática do YouTube às vezes vem **sem pontuação nenhuma** (depende do vídeo) | pontue pelo sentido e pelas pausas do `.srt`; se já vier pontuada, só corrija o que estiver errado |
 | Alucinações do whisper | frase repetida várias vezes seguidas, "Legendas pela comunidade Amara.org", "Obrigado por assistir" no meio de silêncio | remova |
 
 **Limites da revisão:**
