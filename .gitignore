@@ -1,0 +1,17 @@
+# binários e dependências baixadas/compiladas
+bin/
+models/
+third_party/
+*.part
+
+# saídas da ferramenta e dos agentes
+transcricoes/
+analises/
+*.txt
+*.srt
+
+# sistema / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
